@@ -1,38 +1,132 @@
 .App {
+    text-align: center;
+    overflow: hidden;
+}
+
+::-webkit-scrollbar {
+  height: 6px; /* Adjust the height of the scrollbar */
+  background-color: transparent; /* Set the background color of the scrollbar */
+}
+
+/* Style the scrollbar thumb */
+::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.3); /* Set the color of the scrollbar thumb */
+  border-radius: 10px; /* Set the border radius to make it rounded */
+}
+
+/* Style the scrollbar track */
+::-webkit-scrollbar-track {
+  background-color: #e5e5e5;
+  border-radius: 10px;
+
+}
+
+.header{
+  position: relative;
+  margin: 0;
+  padding: 15px 0;
+  background-color: #f3f3f3;
+}
+.header > *{
+  padding: 0;
+  margin: 0;
+}
+
+.search-bar {
+  margin-bottom: 20px;
+}
+
+.search-bar input {
+  width: 300px;
+  padding: 8px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  box-sizing: border-box;
+}
+
+.items-container {
+  display: flex;
+  flex-direction: row;
+  text-align: center;
+  margin: 10px 30px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+}
+
+.clear-btn{
+  padding: 10px 20px;
+  margin: 10px auto;
+  background-color: #e21111;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+.clear-btn:hover{
+  background-color: #b90c0c;
+}
+
+.calc-btn{
+  padding: 10px 20px;
+  margin: 10px auto;
+  background-color: #1bb53d;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+.calc-btn:hover{
+  background-color: #148922;
+}
+
+/* Table */
+.table-container{
+  overflow-x: auto;
   text-align: center;
 }
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+  
+  
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+thead {
+  background-color: #f2f2f2;
+}
+th {
+  padding: 10px;
+  text-align: left;
+  font-weight: bold;
+  border-bottom: 2px solid #ddd;
+}
+td {
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+tbody tr:nth-child(even) {
+  background-color: #f9f9f9;
 }
 
-.App-link {
-  color: #61dafb;
+tbody tr:hover {
+  background-color: #f9f9f9;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+table svg{
+  background-color: rgb(222, 24, 24);
+  padding: 5px;
+  margin: 0;
+  border-radius: 5px;
+  color: rgb(255, 255, 255);
+  cursor: pointer;
+}
+
+table svg:hover{
+  background-color: #b52c2c;
 }
