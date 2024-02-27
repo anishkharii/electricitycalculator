@@ -88,9 +88,7 @@
 
 .table-container {
   position: relative;
-  display: inline-block;
   width: auto;
-  background-color: #0000002f;
   overflow-x: auto;
   text-align: center;
 }
