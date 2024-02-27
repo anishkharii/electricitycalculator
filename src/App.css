@@ -1,39 +1,33 @@
 .App {
-    text-align: center;
-    overflow: hidden;
+  text-align: center;
+  overflow: hidden;
 }
 
 ::-webkit-scrollbar {
-  height: 6px; /* Adjust the height of the scrollbar */
-  background-color: transparent; /* Set the background color of the scrollbar */
+  height: 6px;
+  background-color: transparent;
 }
 
-/* Style the scrollbar thumb */
 ::-webkit-scrollbar-thumb {
-  background-color: rgba(0, 0, 0, 0.3); /* Set the color of the scrollbar thumb */
-  border-radius: 10px; /* Set the border radius to make it rounded */
+  background-color: rgba(0, 0, 0, 0.3);
+  border-radius: 10px;
 }
 
-/* Style the scrollbar track */
 ::-webkit-scrollbar-track {
   background-color: #e5e5e5;
   border-radius: 10px;
-
 }
 
-.header{
+.header {
   position: relative;
   margin: 0;
   padding: 15px 0;
   background-color: #f3f3f3;
 }
-.header > *{
+
+.header > * {
   padding: 0;
   margin: 0;
-}
-
-.search-bar {
-  margin-bottom: 20px;
 }
 
 .search-bar input {
@@ -55,70 +49,79 @@
   scroll-behavior: smooth;
 }
 
-.clear-btn{
+.button {
+  display: block;
   padding: 10px 20px;
   margin: 10px auto;
-  background-color: #e21111;
   color: #fff;
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  transition: background-color 0.2s ease;
 }
-.clear-btn:hover{
+
+.clear-btn {
+  background-color: #e21111;
+}
+
+.clear-btn:hover {
   background-color: #b90c0c;
 }
 
-.calc-btn{
-  padding: 10px 20px;
-  margin: 10px auto;
+.calc-btn {
   background-color: #1bb53d;
-  color: #fff;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background-color 0.2s ease;
 }
-.calc-btn:hover{
+
+.calc-btn:hover {
   background-color: #148922;
 }
 
-/* Table */
-.table-container{
+.download-btn {
+  background-color: #1bb53d;
+  display: flex;
+  align-items: center;
+  padding: 8px 15px;
+}
+
+.download-btn:hover {
+  background-color: #148922;
+}
+
+.table-container {
+  position: relative;
+  display: inline-block;
+  width: auto;
+  background-color: #0000002f;
   overflow-x: auto;
   text-align: center;
 }
+
 table {
+  display: block;
   width: 100%;
   border-collapse: collapse;
   margin-bottom: 20px;
-  
-  
+  max-width: 800px;
+  margin: 5px auto;
 }
 
-thead {
-  background-color: #f2f2f2;
-}
 th {
   padding: 10px;
   text-align: left;
   font-weight: bold;
   border-bottom: 2px solid #ddd;
 }
+
 td {
   padding: 10px;
   border-bottom: 1px solid #ddd;
 }
 
-tbody tr:nth-child(even) {
-  background-color: #f9f9f9;
-}
-
+tbody tr:nth-child(even),
 tbody tr:hover {
   background-color: #f9f9f9;
 }
 
-table svg{
+table svg {
   background-color: rgb(222, 24, 24);
   padding: 5px;
   margin: 0;
@@ -127,6 +130,53 @@ table svg{
   cursor: pointer;
 }
 
-table svg:hover{
+table svg:hover {
   background-color: #b52c2c;
 }
+
+.loader-container{
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #00000017;
+  }
+  
+  .logo-loader {
+    position: relative;
+    margin: 20px auto;
+    width: 65px;
+    height: 117px;
+    
+  }
+  .logo-loader:before,
+  .logo-loader:after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: #ff8001;    
+    box-shadow: 0 0 0 50px;
+    clip-path: polygon(100% 0, 23% 46%, 46% 44%, 15% 69%, 38% 67%, 0 100%, 76% 57%, 53% 58%, 88% 33%, 60% 37%);;
+  }
+  .logo-loader:after {
+    animation: l8 1s infinite;
+    transform: perspective(300px) translateZ(0px)
+  }
+  
+  .text-loader {
+    width: fit-content;
+    font-weight: bold;
+    font-family: monospace;
+    margin: 3px auto;
+    font-size: 15px;
+    clip-path: inset(0 3ch 0 0);
+    animation: l4 1s steps(4) infinite;
+  }
+  .text-loader:before {
+    content:"Calculating Units..."
+  }
+  @keyframes l4 {to{clip-path: inset(0 -1ch 0 0)}} 
+    @keyframes l8 {
+      to {transform:perspective(300px) translateZ(180px);opacity:0}
+    }
