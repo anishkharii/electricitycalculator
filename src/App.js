@@ -1,11 +1,14 @@
 import React, { useState, useEffect, useRef } from "react";
 
-import jsPDF from 'jspdf';
-import 'jspdf-autotable';
-import ElectricComponent from "./electricComponent";
+import jsPDF from "jspdf";
+import "jspdf-autotable";
+import ElectricComponent from "./Component/electricComponent";
 import ComponentData from "./data-file";
-import { ArrowDownToLine, X } from "lucide-react";
+import { ArrowDownToLine, X, ExternalLink } from "lucide-react";
 import "./App.css";
+import Prompt from "./Component/prompt";
+import Loader from "./Component/loader";
+import Header from "./Component/header";
 
 const App = () => {
   const [items, setItems] = useState(() => {
@@ -16,6 +19,7 @@ const App = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [isLoading, setIsLoading] = useState(null);
   const [isMounted, setIsMounted] = useState(false);
+  const [prompt, setPrompt] = useState(false);
   const bottomRef = useRef(null);
 
   useEffect(() => {
@@ -46,6 +50,11 @@ const App = () => {
 
   const handleDeleteAllData = () => {
     setItems([]);
+    setCalculatedUnits(null);
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
   };
 
   const handleCalculateUnits = async () => {
@@ -63,70 +72,90 @@ const App = () => {
   };
   const handleDownloadPDF = () => {
     const doc = new jsPDF();
-  
+
     // Add URL and title to the PDF
     const url = "https://electricitycalculator.vercel.app";
     const title = "Electricity Calculator";
     const subtitle = "Created by Anish Khari";
-  
+
     // Set font styles for the header
     doc.setFont("helvetica", "bold");
     doc.setFontSize(20);
-  
+
     // Add header text
-    doc.text(title, doc.internal.pageSize.getWidth() / 2, 20, { align: "center" });
-  
+    doc.text(title, doc.internal.pageSize.getWidth() / 2, 20, {
+      align: "center",
+    });
+
     // Set font styles for the subtitle
     doc.setFont("helvetica", "normal");
     doc.setFontSize(12);
-  
+
     // Add subtitle text
-    doc.text(subtitle, doc.internal.pageSize.getWidth() / 2, 30, { align: "center" });
-  
+    doc.text(subtitle, doc.internal.pageSize.getWidth() / 2, 30, {
+      align: "center",
+    });
+
     // Set font styles for the URL
     doc.setFont("helvetica", "normal");
     doc.setFontSize(12);
-  
+
     // Add URL text
     doc.textWithLink(`URL: ${url}`, 10, 40, { url, align: "left" });
-  
+
     // Create an array with table data
     const tableData = items.map((item, index) => [
       `${index + 1}.`,
       item.name,
       item.totalDevices,
       `${item.watts}W`,
-      `${item.usagePerDay} Hrs.`
+      `${item.usagePerDay} Hrs.`,
     ]);
-  
+
     // Add the table to the PDF
     doc.autoTable({
       head: [["S.No.", "Name", "No. of Devices", "Watts", "Usage/Day"]],
       body: tableData,
-      startY: 60
+      startY: 60,
     });
-  
+
     // Add estimated electricity units
     const startY = doc.autoTable.previous.finalY + 10;
     doc.text("Estimated Electricity Units:", 10, startY);
-    doc.text(`Daily Units: ${Math.round(calculatedUnits * 100) / 100} kWh`, 20, startY + 10);
-    doc.text(`Weekly Units: ${Math.round(calculatedUnits * 7 * 100) / 100} kWh`, 20, startY + 20);
-    doc.text(`15 Days Units: ${Math.round(calculatedUnits * 15 * 100) / 100} kWh`, 20, startY + 30);
-    doc.text(`30 Days Units: ${Math.round(calculatedUnits * 30 * 100) / 100} kWh`, 20, startY + 40);
+    doc.text(
+      `Daily Units: ${Math.round(calculatedUnits * 100) / 100} kWh`,
+      20,
+      startY + 10
+    );
+    doc.text(
+      `Weekly Units: ${Math.round(calculatedUnits * 7 * 100) / 100} kWh`,
+      20,
+      startY + 20
+    );
+    doc.text(
+      `15 Days Units: ${Math.round(calculatedUnits * 15 * 100) / 100} kWh`,
+      20,
+      startY + 30
+    );
+    doc.text(
+      `30 Days Units: ${Math.round(calculatedUnits * 30 * 100) / 100} kWh`,
+      20,
+      startY + 40
+    );
 
     // Add sharing message
     doc.setFont("helvetica", "normal");
     doc.setFontSize(10);
-    doc.text("Share this website with your friends and family!", 10, doc.internal.pageSize.getHeight() - 10);
+    doc.text(
+      "Share this website with your friends and family!",
+      10,
+      doc.internal.pageSize.getHeight() - 10
+    );
 
     // Save the PDF
     doc.save("electricity_units.pdf");
-};
+  };
 
-  
-  
-  
-  
   const handleSliderTouchStart = () => {
     document.getElementsByClassName("items-container")[0].style.overflowX =
       "hidden";
@@ -147,14 +176,29 @@ const App = () => {
 
   return (
     <div className="App">
-      <div className="header">
-        <h2>Electricity Calculator</h2>
-        <h6>Created with ❤️ by Anish Khari</h6>
-      </div>
 
-      <h3>Add Items</h3>
+      {/*   -------Pop Up Clear All ------- */}
+      {prompt ? (
+        <Prompt
+          closePrompt={() => setPrompt(false)}
+          clearAll={() => {
+            handleDeleteAllData();
+            setPrompt(false);
+          }}
+          totalItems={items.length}
+        />
+      ) : null}
 
+
+      {/*   -------Loader ------- */}
+      {isLoading ? <Loader /> : null}
+
+      {/*   ------- Header ------- */}
+      <Header/>
+
+      {/*   ------- Search Bar ------- */}
       <div className="search-bar">
+        <h3>Search Items</h3>
         <input
           type="text"
           placeholder="Search..."
@@ -163,6 +207,7 @@ const App = () => {
         />
       </div>
 
+      {/*   ------- Items Container ------- */}
       <div className="items-container">
         {filteredItems.map((data, index) => (
           <ElectricComponent
@@ -180,19 +225,16 @@ const App = () => {
         {filteredItems.length === 0 && <h4>No such Item found.</h4>}
       </div>
 
-      <button className="button clear-btn" onClick={handleDeleteAllData}>
+
+
+      {/*   ------- Clear All Button ------- */}
+      <button className="button clear-btn" onClick={() => setPrompt(true)}>
         Clear All
       </button>
 
-      <div className="table-container">
-        {/* style={isLoading===true ?{ overflowX: "hidden", overflow:"hidden"}:{overflowX:'auto',overflow:"auto"}}  */}
-        {isLoading === true && (
-          <div className="loader-container">
-            <div className="logo-loader"></div>
-            <div className="text-loader"></div>
-          </div>
-        )}
 
+      {/*   ------- Table ------- */}
+      <div className="table-container">
         <table>
           <thead>
             <tr>
@@ -221,12 +263,15 @@ const App = () => {
         </table>
       </div>
 
+      {/*   ------- Calculate Units Button ------- */}
       {items.length >= 1 && (
         <button className="button calc-btn" onClick={handleCalculateUnits}>
           Calculate Units
         </button>
       )}
 
+
+      {/*   ------- Result Section ------- */}
       {calculatedUnits !== null && (
         <div ref={bottomRef}>
           <h3>Estimated Electricity Units:</h3>
@@ -245,6 +290,8 @@ const App = () => {
           </button>
         </div>
       )}
+
+      
     </div>
   );
 };

@@ -51,7 +51,7 @@ const ElectricComponent = (props) => {
 
   const handleAddButtonClick = () => {
     if (navigator.vibrate) {
-      navigator.vibrate(30);
+      navigator.vibrate(40);
     }
     const newObject = {
       name: props.name,
@@ -62,15 +62,13 @@ const ElectricComponent = (props) => {
     props.onAdd(newObject);
   };
   return (
-    <div className="component-container">
-      <div className="photo-container">
-      {/* <img src={props.imageUrl} alt=""/> */}
-      
-      <div className="name">{props.name}</div>
+    <div className="component-container min-w-52 flex flex-col justify-start mx-5 my-5 rounded-md ">
+      <div className="  title-container text-xl font-bold bg-slate-300  ">
+        {props.name}
       </div>
 
       <div className="details-container">
-        <div className="slider-container">
+        <div className="slider-container flex flex-col items-center justify-center ">
           <label htmlFor="watts-slider">No. of Devices:</label>
           <input
             type="range"
@@ -85,13 +83,14 @@ const ElectricComponent = (props) => {
           />
           <input
             type="number"
+            className="  w-1/3 border rounded-sm "
             value={totalDevices}
             onBlur={handleTotalDevicesChange}
             onChange={(e) => setTotalDevices(e.target.value)}
           />
         </div>
-        <div className="slider-container">
-          <label htmlFor="watts-slider">Watts:</label>
+        <div className="slider-container flex flex-col items-center justify-center ">
+          <label htmlFor="watts-slider">Wattage (W):</label>
           <input
             type="range"
             id="watts-slider"
@@ -105,12 +104,13 @@ const ElectricComponent = (props) => {
           />
           <input
             type="number"
+            className=" w-1/3 border rounded-sm "
             value={watts}
             onBlur={handleWattsChange}
             onChange={(e) => setWatts(e.target.value)}
           />
         </div>
-        <div className="slider-container">
+        <div className="slider-container flex flex-col items-center justify-center ">
           <label htmlFor="usage-per-day-slider">Usage per Day(in Hrs.):</label>
           <input
             type="range"
@@ -123,13 +123,13 @@ const ElectricComponent = (props) => {
             onTouchEnd={props.onTouchEnd}
           />
           <input
-            type="number"
+            type="number" className=" w-1/3 border rounded-sm "
             value={usagePerDay}
             onChange={(e) => setUsagePerDay(e.target.value)}
             onBlur={handleUsagePerDayChange}
           />
         </div>
-        <button className='add-btn' onClick={handleAddButtonClick}>ADD</button>
+        <button className='add-btn mx-3 my-3 bg-cyan-700 text-white px-7 py-2 rounded-md' onClick={handleAddButtonClick}>ADD</button>
       </div>
     </div>
   );

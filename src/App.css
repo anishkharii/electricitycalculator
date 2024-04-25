@@ -5,24 +5,39 @@
 
 ::-webkit-scrollbar {
   height: 6px;
+  width: 10px;
   background-color: transparent;
 }
 
 ::-webkit-scrollbar-thumb {
-  background-color: rgba(0, 0, 0, 0.3);
-  border-radius: 10px;
+  background-color: #c7c7c7;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: #a7a7a7;
 }
 
 ::-webkit-scrollbar-track {
-  background-color: #e5e5e5;
+  background-color: #f0f0f0;
   border-radius: 10px;
 }
 
 .header {
   position: relative;
-  margin: 0;
+  margin: 0 0  20px 0;
   padding: 15px 0;
-  background-color: #f3f3f3;
+  background-image: linear-gradient(
+  180deg,
+  hsl(220deg 30% 84%) 0%,
+  hsl(208deg 32% 83%) 15%,
+  hsl(199deg 35% 83%) 44%,
+  hsl(192deg 37% 82%) 76%,
+  hsl(186deg 39% 81%) 100%
+);
+box-shadow: rgba(0, 0, 0, 0.25) 0px 0.0625em 0.0625em, rgba(0, 0, 0, 0.25) 0px 0.125em 0.5em, rgba(255, 255, 255, 0.1) 0px 0px 0px 1px inset;
 }
 
 .header > * {
@@ -30,41 +45,59 @@
   margin: 0;
 }
 
+
+
 .search-bar input {
   width: 300px;
   padding: 8px;
   font-size: 16px;
-  border: 1px solid #ccc;
+  border: 2px solid #ccc;
   border-radius: 8px;
   box-sizing: border-box;
+  transition: all 0.3s ease-in-out;
+}
+
+.search-bar input:focus {
+  width: 350px;
+  outline: none;
+  border: 2px solid #374766;
 }
 
 .items-container {
   display: flex;
   flex-direction: row;
   text-align: center;
-  margin: 10px 30px;
+  margin:20px 0;
+  padding:0 200px;
   overflow-x: auto;
-  scroll-snap-type: x mandatory;
+  scroll-snap-type:x mandatory;
   scroll-behavior: smooth;
 }
 
-.button {
+button {
   display: block;
   padding: 10px 20px;
   margin: 10px auto;
-  color: #fff;
+  font-size: 16px;
+  color: white;
   border: none;
   border-radius: 5px;
   cursor: pointer;
+  transition: all .2s ease-in-out;
+  
+  box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
+}
+
+button:active {
+  box-shadow: none;
 }
 
 .clear-btn {
-  background-color: #e21111;
+  background-color: #E71010;
 }
 
 .clear-btn:hover {
-  background-color: #b90c0c;
+  background-color: #CE1F1F;
 }
 
 .calc-btn {
@@ -132,14 +165,6 @@ table svg:hover {
   background-color: #b52c2c;
 }
 
-.loader-container{
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: #00000017;
-  }
   
   .logo-loader {
     position: relative;
@@ -177,4 +202,11 @@ table svg:hover {
   @keyframes l4 {to{clip-path: inset(0 -1ch 0 0)}} 
     @keyframes l8 {
       to {transform:perspective(300px) translateZ(180px);opacity:0}
+    }
+
+    @media screen and (min-width: 450px) {
+      .items-container {
+        padding:0;
+      }
+      
     }
