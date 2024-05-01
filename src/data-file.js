@@ -9,8 +9,8 @@ const ComponentData = [
   {
     name: "Ceiling Fan",
     imageUrl: "https://example.com/ceiling_fan.jpg",
-    minWatts: 40,
-    maxWatts: 500,
+    minWatts: 35,
+    maxWatts: 200,
     step: 5,
   },
   {
@@ -23,6 +23,20 @@ const ComponentData = [
   {
     name: "Electric Motor",
     imageUrl: "https://example.com/electric_motor.jpg",
+    minWatts: 500,
+    maxWatts: 5000,
+    step: 100,
+  },
+  {
+    name:"Air Cooler",
+    imageUrl: "https://example.com/air_cooler.jpg",
+    minWatts: 100,
+    maxWatts: 1000,
+    step: 10,
+  },
+  {
+    name:"Submersible Pump",
+    imageUrl: "https://example.com/submersible_pump.jpg",
     minWatts: 500,
     maxWatts: 5000,
     step: 100,
@@ -42,14 +56,14 @@ const ComponentData = [
     step: 50,
   },
   {
-    name: "Air Conditioner (Window)",
+    name: "Air Conditioner (Window) AC",
     imageUrl: "https://example.com/window_air_conditioner.jpg",
     minWatts: 1000,
     maxWatts: 5000,
     step: 200,
   },
   {
-    name: "Air Conditioner (Split)",
+    name: "Air Conditioner (Split) AC",
     imageUrl: "https://example.com/split_air_conditioner.jpg",
     minWatts: 1000,
     maxWatts: 6000,

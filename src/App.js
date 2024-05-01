@@ -68,7 +68,7 @@ const App = () => {
       });
 
       setCalculatedUnits(calculatedResult);
-    }, 2500);
+    }, 2000);
   };
   const handleDownloadPDF = () => {
     const doc = new jsPDF();
@@ -104,6 +104,7 @@ const App = () => {
     doc.textWithLink(`URL: ${url}`, 10, 40, { url, align: "left" });
 
     // Create an array with table data
+    doc.text("Device Details", 10, 60, { align: "left" });
     const tableData = items.map((item, index) => [
       `${index + 1}.`,
       item.name,
@@ -116,32 +117,49 @@ const App = () => {
     doc.autoTable({
       head: [["S.No.", "Name", "No. of Devices", "Watts", "Usage/Day"]],
       body: tableData,
-      startY: 60,
+      startY: 65,
+    });
+
+    // Create an array with table data
+    const resultData = [
+      [
+        "Daily",
+        `${Math.round(calculatedUnits * 100) / 100} kWh`,
+      ],
+      [
+        "Weekly ",
+        `${Math.round(calculatedUnits * 7 * 100) / 100} kWh`,
+      ],
+      [
+        "15 Days ",
+        `${Math.round(calculatedUnits * 15 * 100) / 100} kWh`,
+      ],
+      [
+        "30 Days ",
+        `${Math.round(calculatedUnits * 30 * 100) / 100} kWh`,
+      ],
+      [
+        "180 Days ",
+        `${Math.round(calculatedUnits * 180 * 100) / 100} kWh`,
+      ],
+      [
+        "1 Year ",
+        `${Math.round(calculatedUnits * 365 * 100) / 100} kWh`,
+      ],
+    ];
+
+    // Add the result table to the PDF
+    doc.text("Estimated Units", 10, doc.autoTable.previous.finalY + 10);
+
+    const tableWidth = doc.internal.pageSize.getWidth() / 3;
+    doc.autoTable({
+      head: [["Time Span", "Estimated Units"]],
+      body: resultData,
+      startY: doc.autoTable.previous.finalY + 15,
+      tableWidth: tableWidth,
     });
 
     // Add estimated electricity units
-    const startY = doc.autoTable.previous.finalY + 10;
-    doc.text("Estimated Electricity Units:", 10, startY);
-    doc.text(
-      `Daily Units: ${Math.round(calculatedUnits * 100) / 100} kWh`,
-      20,
-      startY + 10
-    );
-    doc.text(
-      `Weekly Units: ${Math.round(calculatedUnits * 7 * 100) / 100} kWh`,
-      20,
-      startY + 20
-    );
-    doc.text(
-      `15 Days Units: ${Math.round(calculatedUnits * 15 * 100) / 100} kWh`,
-      20,
-      startY + 30
-    );
-    doc.text(
-      `30 Days Units: ${Math.round(calculatedUnits * 30 * 100) / 100} kWh`,
-      20,
-      startY + 40
-    );
 
     // Add sharing message
     doc.setFont("helvetica", "normal");
@@ -176,7 +194,6 @@ const App = () => {
 
   return (
     <div className="App">
-
       {/*   -------Pop Up Clear All ------- */}
       {prompt ? (
         <Prompt
@@ -189,12 +206,11 @@ const App = () => {
         />
       ) : null}
 
-
       {/*   -------Loader ------- */}
       {isLoading ? <Loader /> : null}
 
       {/*   ------- Header ------- */}
-      <Header/>
+      <Header />
 
       {/*   ------- Search Bar ------- */}
       <div className="search-bar">
@@ -225,13 +241,10 @@ const App = () => {
         {filteredItems.length === 0 && <h4>No such Item found.</h4>}
       </div>
 
-
-
       {/*   ------- Clear All Button ------- */}
       <button className="button clear-btn" onClick={() => setPrompt(true)}>
         Clear All
       </button>
-
 
       {/*   ------- Table ------- */}
       <div className="table-container">
@@ -270,28 +283,58 @@ const App = () => {
         </button>
       )}
 
-
       {/*   ------- Result Section ------- */}
       {calculatedUnits !== null && (
-        <div ref={bottomRef}>
-          <h3>Estimated Electricity Units:</h3>
-          <h3>Daily Units: {Math.round(calculatedUnits * 100) / 100} kWh</h3>
-          <h3>
-            Weekly Units: {Math.round(calculatedUnits * 7 * 100) / 100} kWh
-          </h3>
-          <h3>
-            15 Days Units: {Math.round(calculatedUnits * 15 * 100) / 100} kWh
-          </h3>
-          <h3>
-            30 Days Units: {Math.round(calculatedUnits * 30 * 100) / 100} kWh
-          </h3>
+        <div
+          ref={bottomRef}
+          className=" flex flex-col items-center justify-center gap-8 my-6"
+        >
+          <table className=" w-auto ">
+            <caption className="text-xl font-bold py-5">
+              Electricity Units
+            </caption>
+            <thead>
+              <tr>
+                <th className=" font-bold px-5 bg-cyan-700 text-white">
+                  Time Span
+                </th>
+                <th className=" font-bold px-5 bg-cyan-700 text-white">
+                  Units
+                </th>
+              </tr>
+            </thead>
+            <tbody className=" bg-slate-100">
+              <tr className=" border border-x-2 px-5">
+                <td className="font-bold">Daily</td>
+                <td>{Math.round(calculatedUnits * 100) / 100} kWh</td>
+              </tr>
+              <tr className=" border border-x-2 px-5">
+                <td className="font-bold">Weekly</td>
+                <td>{Math.round(calculatedUnits * 7 * 100) / 100} kWh</td>
+              </tr>
+              <tr className=" border border-x-2 px-5">
+                <td className="font-bold">15 Days</td>
+                <td>{Math.round(calculatedUnits * 15 * 100) / 100} kWh</td>
+              </tr>
+              <tr className=" border border-x-2 px-5">
+                <td className="font-bold">30 Days</td>
+                <td>{Math.round(calculatedUnits * 30 * 100) / 100} kWh</td>
+              </tr>
+              <tr className=" border border-x-2 px-5">
+                <td className="font-bold">180 Days</td>
+                <td>{Math.round(calculatedUnits * 180 * 100) / 100} kWh</td>
+              </tr>
+              <tr className=" border border-x-2 px-5">
+                <td className="font-bold">1 Year</td>
+                <td>{Math.round(calculatedUnits * 365 * 100) / 100} kWh</td>
+              </tr>
+            </tbody>
+          </table>
           <button className="button download-btn" onClick={handleDownloadPDF}>
             Download <ArrowDownToLine size={20} />
           </button>
         </div>
       )}
-
-      
     </div>
   );
 };

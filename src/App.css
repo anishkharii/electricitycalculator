@@ -126,7 +126,7 @@ button:active {
   text-align: center;
 }
 
-table {
+.table-container table {
   display: block;
   width: 100%;
   border-collapse: collapse;
@@ -135,24 +135,24 @@ table {
   margin: 5px auto;
 }
 
-th {
+.table-container th {
   padding: 10px;
   text-align: left;
   font-weight: bold;
   border-bottom: 2px solid #ddd;
 }
 
-td {
+.table-container td {
   padding: 10px;
   border-bottom: 1px solid #ddd;
 }
 
-tbody tr:nth-child(even),
-tbody tr:hover {
+.table-container tbody tr:nth-child(even),
+.table-container tbody tr:hover {
   background-color: #f9f9f9;
 }
 
-table svg {
+.table-container table svg {
   background-color: rgb(222, 24, 24);
   padding: 5px;
   margin: 0;
@@ -161,7 +161,7 @@ table svg {
   cursor: pointer;
 }
 
-table svg:hover {
+.table-container table svg:hover {
   background-color: #b52c2c;
 }
 
