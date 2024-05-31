@@ -75,3 +75,10 @@
 .close-btn:hover{
     color: #ffffff;
 }
+
+@media screen and (max-width: 550px) {
+    .notification{
+        font-size: 0.9rem;
+        width: 90%;
+    }
+}

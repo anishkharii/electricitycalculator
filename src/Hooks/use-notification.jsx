@@ -13,10 +13,14 @@ const useNotification = (position="top-right") => {
     }, notificationProps.duration);
   }, []);
 
+  const closeNotification = ()=>{
+    clearTimeout(timer);
+    setNotification(null);
+  }
   const NotificationComponent = notification ? (
     <div className="notification-container">
       
-      <Notification {...notification}  />
+      <Notification {...notification} onClose={closeNotification} />
     </div>
   ) : null
 
