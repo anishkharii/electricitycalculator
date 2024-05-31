@@ -9,6 +9,7 @@ import "./App.css";
 import Prompt from "./Component/prompt";
 import Loader from "./Component/loader";
 import Header from "./Component/header";
+import useNotification from "./Hooks/use-notification";
 
 const App = () => {
   const [items, setItems] = useState(() => {
@@ -20,7 +21,10 @@ const App = () => {
   const [isLoading, setIsLoading] = useState(null);
   const [isMounted, setIsMounted] = useState(false);
   const [prompt, setPrompt] = useState(false);
+  const [popUp, setPopUp] = useState(false);
   const bottomRef = useRef(null);
+
+  const {NotificationComponent, TriggerNotification} = useNotification("top-right");
 
   useEffect(() => {
     localStorage.setItem("items", JSON.stringify(items));
@@ -38,8 +42,19 @@ const App = () => {
   }, [isMounted, calculatedUnits]);
 
   const handleAddItem = (item) => {
+
     const updatedItems = [...items, item];
+    TriggerNotification(
+      {
+        message: `${item.totalDevices} ${item.name} of ${item.watts}W added Successfully.`,
+        duration: 3500,
+      }
+    )
     setItems(updatedItems);
+    setInterval(() => {
+      setPopUp(true);
+    },2000);
+    setPopUp(false);
   };
 
   const handleDeleteItem = (index) => {
@@ -194,6 +209,8 @@ const App = () => {
 
   return (
     <div className="App">
+
+      {NotificationComponent}
       {/*   -------Pop Up Clear All ------- */}
       {prompt ? (
         <Prompt
@@ -205,7 +222,6 @@ const App = () => {
           totalItems={items.length}
         />
       ) : null}
-
       {/*   -------Loader ------- */}
       {isLoading ? <Loader /> : null}
 

@@ -1,9 +1,19 @@
-import { React, useState } from "react";
+import { React, useEffect, useRef, useState } from "react";
 import './component.css';
 const ElectricComponent = (props) => {
   const [watts, setWatts] = useState(props.minWatts);
   const [usagePerDay, setUsagePerDay] = useState(1);
   const [totalDevices, setTotalDevices] = useState(1);
+  const [showPopup, setShowPopup] = useState(false);
+  
+  useEffect(() => {
+    if(showPopup) {
+      setTimeout(() => {
+        setShowPopup(false);
+      }, 2500);
+    }
+  })
+  const addButtonRef = useRef(null);
 
   const handleWattsChange = (event) => {
     const newValue = parseInt(event.target.value);
@@ -53,15 +63,20 @@ const ElectricComponent = (props) => {
     if (navigator.vibrate) {
       navigator.vibrate(40);
     }
+
+
     const newObject = {
       name: props.name,
       totalDevices: totalDevices,
       watts: watts,
       usagePerDay: usagePerDay,
     };
+    
+    
     props.onAdd(newObject);
   };
   return (
+    <>
     <div className="component-container min-w-52 flex flex-col justify-start mx-5 my-5 rounded-md ">
       <div className="  title-container text-xl font-bold bg-slate-300  ">
         {props.name}
@@ -129,9 +144,10 @@ const ElectricComponent = (props) => {
             onBlur={handleUsagePerDayChange}
           />
         </div>
-        <button className='add-btn mx-3 my-3 bg-cyan-700 text-white px-7 py-2 rounded-md' onClick={handleAddButtonClick}>ADD</button>
+        <button ref={addButtonRef} className='add-btn mx-3 my-3 bg-cyan-700 text-white px-7 py-2 rounded-md' onClick={handleAddButtonClick}>ADD</button>
       </div>
     </div>
+    </>
   );
 };
 export default ElectricComponent;
