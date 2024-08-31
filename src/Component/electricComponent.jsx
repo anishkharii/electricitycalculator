@@ -1,7 +1,7 @@
 import { React, useEffect, useRef, useState } from "react";
 import './component.css';
-const ElectricComponent = (props) => {
-  const [watts, setWatts] = useState(props.minWatts);
+function ElectricComponent({item, onAddItem, onTouchStart, onTouchEnd}){
+  const [watts, setWatts] = useState(item.minWatts);
   const [usagePerDay, setUsagePerDay] = useState(1);
   const [totalDevices, setTotalDevices] = useState(1);
   const [showPopup, setShowPopup] = useState(false);
@@ -16,15 +16,15 @@ const ElectricComponent = (props) => {
   const addButtonRef = useRef(null);
 
   const handleWattsChange = (event) => {
-    const newValue = parseInt(event.target.value);
+    const newValue = Number(event.target.value);
     if (isNaN(newValue)) {
-      setWatts(props.minWatts);
+      setWatts(item.minWatts);
       return;
     }
-    if (newValue < props.minWatts) {
-      setWatts(props.minWatts);
-    } else if (newValue > props.maxWatts) {
-      setWatts(props.maxWatts);
+    if (newValue < item.minWatts) {
+      setWatts(item.minWatts);
+    } else if (newValue > item.maxWatts) {
+      setWatts(item.maxWatts);
     } else {
       setWatts(newValue);
     }
@@ -66,20 +66,20 @@ const ElectricComponent = (props) => {
 
 
     const newObject = {
-      name: props.name,
+      name: item.name,
       totalDevices: totalDevices,
       watts: watts,
       usagePerDay: usagePerDay,
     };
     
     
-    props.onAdd(newObject);
+    onAddItem(newObject);
   };
   return (
     <>
     <div className="component-container min-w-52 flex flex-col justify-start mx-5 my-5 rounded-md ">
       <div className="  title-container text-xl font-bold bg-slate-300  ">
-        {props.name}
+        {item.name}
       </div>
 
       <div className="details-container">
@@ -93,8 +93,8 @@ const ElectricComponent = (props) => {
             step={1}
             value={totalDevices || 1}
             onChange={handleTotalDevicesChange}
-            onTouchStart={props.onTouchStart}
-            onTouchEnd={props.onTouchEnd}
+            onTouchStart={onTouchStart}
+            onTouchEnd={onTouchEnd}
           />
           <input
             type="number"
@@ -109,13 +109,13 @@ const ElectricComponent = (props) => {
           <input
             type="range"
             id="watts-slider"
-            min={props.minWatts}
-            max={props.maxWatts}
-            step={props.step}
-            value={watts || props.minWatts}
+            min={item.minWatts}
+            max={item.maxWatts}
+            step={item.step}
+            value={watts}
             onChange={handleWattsChange}
-            onTouchStart={props.onTouchStart}
-            onTouchEnd={props.onTouchEnd}
+            onTouchStart={onTouchStart}
+            onTouchEnd={onTouchEnd}
           />
           <input
             type="number"
@@ -134,8 +134,8 @@ const ElectricComponent = (props) => {
             max={24}
             value={usagePerDay || 1}
             onChange={handleUsagePerDayChange}
-            onTouchStart={props.onTouchStart}
-            onTouchEnd={props.onTouchEnd}
+            onTouchStart={onTouchStart}
+            onTouchEnd={onTouchEnd}
           />
           <input
             type="number" className=" w-1/3 border rounded-sm "
