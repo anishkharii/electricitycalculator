@@ -66,6 +66,7 @@ function ElectricComponent({item, onAddItem, onTouchStart, onTouchEnd}){
 
 
     const newObject = {
+      id:item.id,
       name: item.name,
       totalDevices: totalDevices,
       watts: watts,

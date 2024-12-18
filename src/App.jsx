@@ -2,7 +2,6 @@ import React, { useState, useEffect, useRef } from "react";
 import "./App.css";
 
 import ComponentData from "./Utils/data-file";
-import handleDownloadPdf from "./Utils/DownloadPdf";
 
 import Button from "./Component/Button";
 import Loader from "./Component/loader";
@@ -23,40 +22,40 @@ const App = () => {
   const [calculatedUnits, setCalculatedUnits] = useState(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [isLoading, setIsLoading] = useState(null);
-  const [isMounted, setIsMounted] = useState(false);
   const [prompt, setPrompt] = useState(false);
-  const [popUp, setPopUp] = useState(false);
   const ResultRef = useRef(null);
 
-  const { NotificationComponent, TriggerNotification } =
-    useNotification("top-right");
+  const { NotificationComponent, TriggerNotification } = useNotification();
 
   useEffect(() => {
     localStorage.setItem("items", JSON.stringify(items));
   }, [items]);
 
-  useEffect(() => {
-    setIsMounted(true);
-    return () => setIsMounted(false);
-  }, []);
+  
 
   useEffect(() => {
-    if (isMounted && ResultRef.current) {
+    if (ResultRef.current) {
       ResultRef.current.scrollIntoView({ behavior: "smooth" });
     }
-  }, [isMounted, calculatedUnits]);
+  }, [ calculatedUnits]);
 
   const handleAddItem = (item) => {
-    const updatedItems = [...items, item];
+    const updatedItems = [...items,item];
+    const sortedItems = updatedItems.reduce((acc, curr) => {
+      const existingItem = acc.find(i => i.id === curr.id);
+      if (existingItem) {
+        existingItem.totalDevices += curr.totalDevices;
+      } else {
+        acc.push({ ...curr });
+      }
+      return acc;
+    }, []);
+    
     TriggerNotification({
       message: `${item.totalDevices} ${item.name} of ${item.watts}W added Successfully.`,
       duration: 3500,
     });
-    setItems(updatedItems);
-    setInterval(() => {
-      setPopUp(true);
-    }, 2000);
-    setPopUp(false);
+    setItems(sortedItems);
   };
 
   const handleDeleteItem = (index) => {
@@ -74,10 +73,10 @@ const App = () => {
     });
   };
 
-  const handleCalculateUnits = async () => {
+  const handleCalculateUnits =  () => {
     let calculatedResult = 0;
     setIsLoading(true);
-    await setTimeout(() => {
+    setTimeout(() => {
       setIsLoading(false);
       items.forEach((item) => {
         let unit = (item.watts * item.usagePerDay * item.totalDevices) / 1000;
@@ -104,6 +103,7 @@ const App = () => {
 
   const filteredItems = ComponentData.filter((data) =>
     data.name.toLowerCase().includes(searchQuery.toLowerCase())
+    
   );
 
   return (
@@ -146,7 +146,6 @@ const App = () => {
           items={items}
           calculatedUnits={calculatedUnits}
           ResultRef={ResultRef}
-          onDownloadPdf={handleDownloadPdf}
         />
       )}
     </div>

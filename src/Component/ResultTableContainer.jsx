@@ -1,6 +1,7 @@
 import { ArrowDownToLine } from "lucide-react";
+import handleDownloadPdf from "../Utils/DownloadPdf";
 
-function ResultTableContainer({items, calculatedUnits, onDownloadPdf, ResultRef }) {
+function ResultTableContainer({items, calculatedUnits, ResultRef }) {
   return (
     <div
       ref={ResultRef}
@@ -43,7 +44,7 @@ function ResultTableContainer({items, calculatedUnits, onDownloadPdf, ResultRef 
           </tr>
         </tbody>
       </table>
-      <button className="button download-btn" onClick={()=>onDownloadPdf(items, calculatedUnits)}>
+      <button className="button download-btn" onClick={()=>handleDownloadPdf(items, calculatedUnits)}>
         Download <ArrowDownToLine size={20} />
       </button>
     </div>

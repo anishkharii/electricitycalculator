@@ -22,7 +22,7 @@ const Notification = ({ type = "info", message, onClose = () => {} }) => {
 
   return (
     <>
-      <div className={`notification ${type}`}>
+      <div className={`notification ${type} notification-pop-up`}>
         {/*Icons*/}
         {icons[type]}
 
