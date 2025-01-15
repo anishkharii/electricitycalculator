@@ -153,4 +153,5 @@ function ElectricComponent({item, onAddItem, onTouchStart, onTouchEnd}){
     </>
   );
 };
+
 export default ElectricComponent;
