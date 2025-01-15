@@ -1,5 +1,10 @@
 // import ElectricComponent from "./ElectricComponent";
 
+import { useRef } from "react";
+import { useEffect } from "react";
+import { useState } from "react";
+import './component.css';
+
 function ElectricComponent({item, onAddItem, onTouchStart, onTouchEnd}){
   const [watts, setWatts] = useState(item.minWatts);
   const [usagePerDay, setUsagePerDay] = useState(1);
